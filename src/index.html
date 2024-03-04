@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h4>SSE | Observables</h4>
+    <script type="text/javascript">
+      const userId = 1;
+      console.log('userId: ', 1);
+      const eventSource = new EventSource('/sse_get');
+
+      eventSource.onopen = () => {
+        console.log('open');
+      };
+
+      eventSource.onerror = (event) => {
+        console.log('error event: ', event);
+      };
+
+      eventSource.readyState = () => {
+        console.log('readyState: ', eventSource.readyState);
+      };
+
+      eventSource.addEventListener('ping', ({ data }) => {
+        console.log('data: ', data);
+        const message = document.createElement('li');
+        message.innerText = 'New message: ' + data;
+        document.body.appendChild(message);
+      });
+
+      eventSource.onmessage = ({ data }) => {
+        console.log('data: ', data);
+        const message = document.createElement('li');
+        message.innerText = 'New message: ' + data;
+        document.body.appendChild(message);
+      };
+    </script>
+
+    <!-- 
+    <script>
+      console.log('run fetch');
+      fetch('http://localhost:3000/sse_get')
+        .then((res) => {
+          console.log('res: ', res);
+          return res.json();
+        })
+        .then((data) => {
+          console.log('data: ', data);
+        });
+    </script> -->
+  </body>
+</html>
